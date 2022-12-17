@@ -32,6 +32,9 @@ class RawApiError(OpenVkApiError):
         self.response = resp_json
         self.method = method
 
+    def __getitem__(self, item):
+        return self.response[item]
+
 
 class AuthFailed(RawApiError):
     def __init__(self, openvk, resp_json):
