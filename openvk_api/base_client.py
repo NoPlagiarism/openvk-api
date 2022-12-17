@@ -50,7 +50,9 @@ class OpenVkClient:
             return
         return {5: AuthRequired()}.get(resp["error_code"])
 
-    def method(self, method, values=None, raw=False, force_unauthorized=False):
+    def method(self, method, values=None, raw=False, force_unauthorized=False, http_method="GET", files=None):
+        if files is not None and http_method != "POST":
+            raise AttributeError("When sending files, http_method must be POST")
         values = values.copy() if values is not None else dict()
 
         if "access_token" not in values and self.token is not None and not force_unauthorized:
@@ -61,9 +63,11 @@ class OpenVkClient:
             if delay > 0:
                 time.sleep(delay)
 
-            resp = self.session.get(
-                str(self.instance.join("/method/")) + method,
-                params=values
+            resp = self.session.request(
+                method=http_method,
+                url=str(self.instance.join("/method/")) + method,
+                params=values,
+                files=files
             )
         if resp.status_code == 200:
             response = resp.json()
@@ -93,9 +97,13 @@ class OpenVkApiMethod:
 
         return OpenVkApiMethod(self._vk, (self._method + "." if self._method else "") + method)
 
-    def __call__(self, **kwargs):
+    def __call__(self, _options=None, **kwargs):
+        if _options is None:
+            _options = dict()
         for key, value in kwargs.items():
-            if isinstance(value, (list, tuple)):
+            if isinstance(value, (list, tuple, set)):
                 kwargs[key] = ",".join(str(x) for x in value)
+        if "method" in _options:
+            _options["http_method"] = _options.pop("method")
 
-        return self._vk.method(self._method, kwargs)
+        return self._vk.method(self._method, kwargs, **_options)
