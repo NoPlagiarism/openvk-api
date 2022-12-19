@@ -19,13 +19,15 @@ class OpenVkClient:
         self.lock = threading.Lock()
         self.last_request = 0.0
 
-    def auth_with_password(self, login, password, code=None):
+    def auth_with_password(self, login, password, code=None, client_name=None):
         if any((login is None, password is None)):
             raise LoginRequired()
         token_url = self.instance.join(GET_TOKEN_PATH)
         req_params = {"grant_type": "password", "username": login, "password": password}
         if code is not None:
             req_params["code"] = code
+        if client_name is not None:
+            req_params["client_name"] = client_name
         resp = self.session.get(token_url, params=req_params)
         resp_json = resp.json()
         if resp.status_code == 200:
