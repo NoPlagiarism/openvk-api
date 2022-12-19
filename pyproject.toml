@@ -1,8 +1,15 @@
 [tool.poetry]
 name = "openvk-api"
 version = "0.0.2"
-description = ""
+description = "openvk api based on httpx"
 authors = ["NoPlagiarism <37241775+NoPlagiarism@users.noreply.github.com>"]
+license = "MIT"
+repository = "https://github.com/NoPlagiarism/openvk-api"
+readme = "ReadMe.md"
+keywords = ["openvk", "httpx"]
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha"
+]
 
 [tool.poetry.dependencies]
 python = "^3.9"
