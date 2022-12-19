@@ -5,3 +5,4 @@ INSTANCES = ["https://openvk.su", "https://openvk.uk",  # OFFICIAL
 
 DEFAULT_INSTANCE = os.environ.get("OPENVK_DEFAULT", INSTANCES[1])
 
+SESSION_HEADERS = {"User-Agent": "python/openvk-api"}

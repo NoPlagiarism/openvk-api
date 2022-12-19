@@ -1,7 +1,7 @@
 from httpx import Client as Session, URL
 import threading, time
 from .exceptions import AuthFailed, BadPassword, LoginRequired, RawApiError, RawHTTPApiError, AuthRequired
-from .consts import DEFAULT_INSTANCE
+from .consts import DEFAULT_INSTANCE, SESSION_HEADERS
 from json.decoder import JSONDecodeError
 
 GET_TOKEN_PATH = "/token"
@@ -12,7 +12,7 @@ class OpenVkClient:
 
     def __init__(self, instance=None, token=None, session=None):
         self.instance = URL(instance) if instance is not None else URL(DEFAULT_INSTANCE)
-        self.session = Session(base_url=self.instance) if session is None else session
+        self.session = Session(base_url=self.instance, headers=SESSION_HEADERS) if session is None else session
 
         self.token = token
 
