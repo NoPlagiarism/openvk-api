@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openvk-api"
-version = "0.0.2"
+version = "0.0.2a"
 description = "openvk api based on httpx"
 authors = ["NoPlagiarism <37241775+NoPlagiarism@users.noreply.github.com>"]
 license = "MIT"
